@@ -21,12 +21,17 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus
+            - name: alerts
+              mountPath: /etc/prometheus/alerts
           args:
             - '--config.file=/etc/prometheus/prometheus.yml'
       volumes:
         - name: config
           configMap:
             name: prometheus-config
+        - name: alerts
+          configMap:
+            name: prometheus-alerts
 
 --- 
 
