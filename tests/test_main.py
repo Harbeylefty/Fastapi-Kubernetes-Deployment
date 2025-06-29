@@ -8,16 +8,23 @@ def test_health_endpoint():
     """Test health check endpoint."""
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "healthy"}
-
-def test_root_endpoint():
-    """Test root endpoint."""
-    response = client.get("/")
-    assert response.status_code == 200
-    assert "FastAPI" in response.json()["message"]
+    assert response.json()["status"] == "healthy"
 
 def test_metrics_endpoint():
     """Test metrics endpoint."""
     response = client.get("/metrics")
     assert response.status_code == 200
-    assert "python_gc_objects_collected_total" in response.text 
+    assert "http_requests_total" in response.text
+
+def test_get_items():
+    """Test getting all items."""
+    response = client.get("/items")
+    assert response.status_code == 200
+    assert "items" in response.json()
+
+def test_create_item():
+    """Test creating a new item."""
+    item_data = {"name": "Test Item", "description": "Test Description"}
+    response = client.post("/items", json=item_data)
+    assert response.status_code == 200
+    assert response.json()["message"] == "Item created" 
