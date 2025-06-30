@@ -6,31 +6,42 @@ This repository contains a containerized FastAPI application designed for a prod
 
 ```
 .
-├── .github/workflows/      # GitHub Actions CI/CD pipeline
+├── .github/workflows/            
 │   └── ci-cd.yaml
-├── app/                    # FastAPI application source code
-│   ├── main.py
-│   └── Dockerfile
-├── k8s/                    # Kubernetes manifests for the application
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── ingress.yaml
-│   ├── configmap.yaml
-│   ├── secret.yaml
-│   ├── hpa.yaml
-│   └── serviceaccount.yaml
-├── monitoring/             # Kubernetes manifests for the monitoring stack
-│   ├── prometheus-configmap.yaml
-│   ├── grafana-deployment.yaml
-│   └── ... (and other monitoring manifests)
-├── scripts/                # Local deployment and management scripts
-│   ├── deploy.sh
-│   ├── healthcheck.sh
-│   └── rollback.sh
-├── security/               # Security policy manifests
-│   ├── pod-security.yaml
-│   └── rbac.yaml
-└── README.md
+├── main.py                         
+├── Dockerfile                      
+├── requirements.txt               
+├── requirements-dev.txt            
+├── .gitignore                     
+├── Runbook.md                      
+├── k8s/                           
+│   ├── configmap.yaml             
+│   ├── deployment.yaml             
+│   ├── hpa.yaml                   
+│   ├── ingress.yaml               
+│   ├── networkpolicy.yaml          
+│   ├── secret.yaml                 
+│   ├── service.yaml                
+│   └── serviceaccount.yaml        
+├── monitoring/                     
+│   ├── alertmanager-config.yaml    
+│   ├── alertmanager-deployment.yaml 
+│   ├── alerts.yaml                 
+│   ├── grafana-deployment.yaml            
+│   ├── node-exporter.yaml         
+│   ├── prometheus-configmap.yaml   
+│   ├── prometheus-deployment.yaml 
+├── scripts/                        
+│   ├── deploy.sh                  
+│   ├── healthcheck.sh              
+│   └── rollback.sh                
+├── security/                       
+│   ├── pod-security.yaml          
+│   └── rbac.yaml   
+├── tests/                        
+│   ├── init.py         
+│   └── test_main.py               
+└── README.md                     
 ```
 
 ## Prerequisites
@@ -70,13 +81,13 @@ The `deploy.sh` script applies all necessary Kubernetes manifests and can deploy
 
 ### 4. CI/CD Pipeline (`ci-cd.yaml`)
 
-The CI/CD pipeline is configured to run on every push to the `main` branch for changes within the `app/` directory.
+The CI/CD pipeline is configured to run on every push to the `main` branch for changes within the .github/workflows directory, the application code(main.py), the requirements.txt, the Dockerfile, and the tests folder. 
 
 **Pipeline Stages:**
-1.  **Lint & Test:** Runs `flake8` for linting and `pytest` for unit tests.
-2.  **Build & Push:** Builds the Docker image and pushes it to Docker Hub with two tags: `:latest` and the short commit SHA.
+1.  **Test:** Runs `pytest` for unit tests.
+2.  **Build & Push:** Builds the Docker image and pushes it to Docker Hub with two tags: `:latest` and the commit SHA.
 
-**Note:** The pipeline requires `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` to be configured as secrets in the GitHub repository settings.
+**Note:** The pipeline requires `DOCKER_USERNAME` and `DOCKER_PASSWORD` to be configured as secrets in the GitHub repository settings.
 
 ## Management Scripts
 
@@ -115,12 +126,12 @@ Forward the Prometheus port to your local machine:
 ```bash
 kubectl port-forward -n monitoring svc/prometheus-service 9091:9090
 ```
-- **URL:** `http://localhost:9091`
+- **URL:** `http://localhost:9090`
 
 ### 4. Add Prometheus as a Grafana Data Source
 - **URL:** `http://prometheus-service.monitoring.svc.cluster.local:9090`
 - Navigate to Configuration -> Data Sources -> Add Prometheus.
-- Use the URL above and click "Save & test".
+- Use the URL http://prometheus-service.monitoring.svc.cluster.local:9090 and click "Save & test".
 
 ## Security
 
@@ -128,3 +139,6 @@ kubectl port-forward -n monitoring svc/prometheus-service 9091:9090
 - **Pod Security:** The `fastapi-app` namespace is enforced with the `restricted` Pod Security Standard, requiring pods to follow current pod hardening best practices and preventing them from running with privileged settings.
 - **Network Policies:** Network policies are in place to control ingress and egress traffic to the application pods.
 - **Secrets:** Application secrets (like API keys) and configuration are externalized using Kubernetes `Secrets` and `ConfigMaps`.
+
+
+

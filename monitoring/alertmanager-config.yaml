@@ -6,7 +6,7 @@ metadata:
 data:
   alertmanager.yml: |
     global:
-      slack_api_url: 'https://hooks.slack.com/services/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'
+      slack_api_url: 'https://hooks.slack.com/services/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'
     
     route:
       group_by: ['alertname']
