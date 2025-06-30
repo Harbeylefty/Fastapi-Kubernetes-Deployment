@@ -59,7 +59,7 @@ This runbook provides step-by-step instructions for deploying, monitoring, troub
   kubectl port-forward -n fastapi-app svc/fastapi-service 8080:80
   ```
 - Visit `http://localhost:8080/health` in your browser.
-- Should return `{"status": "ok"}`.
+- Should return `{"status": "healthy", "timestamp": "2024-01-01T00:00:00Z"}`.
 
 ---
 
@@ -85,8 +85,20 @@ This runbook provides step-by-step instructions for deploying, monitoring, troub
 - Node Exporter metrics (system health)
 
 ---
+## 5. Scaling 
 
-## 5. Troubleshooting
+### Adjust the number of replicas for the FastAPI deployment to simulate Alerts functionality
+- Scale the deployment to the desired number of replicas. eg - 0
+- Gracefully stops all running instances of the application by scaling the deployment to zero replicas. This is particularly useful for testing your monitoring and alerting systems by simulating an outage.
+  ```
+  kubectl scale deployment fastapi-deployment --replicas=0 -n fastapi-app
+  ```
+- Scale Back Up 
+  ```
+  kubectl scale deployment fastapi-deployment --replicas=2 -n fastapi-app
+  ```
+
+## 6. Troubleshooting
 
 ### Pod Not Starting / CrashLoopBackOff
 - Describe the pod:
@@ -119,7 +131,7 @@ This runbook provides step-by-step instructions for deploying, monitoring, troub
 
 ---
 
-## 6. Security
+## 7. Security
 
 ### Pod Blocked by Security Policy
 - Error: `forbidden: violates PodSecurity "restricted:latest" ...`
