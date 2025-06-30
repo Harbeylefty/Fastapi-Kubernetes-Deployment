@@ -10,7 +10,7 @@
 set -e # Exit immediately if any command fails.
 
 # --- Configuration ---
-IMAGE_BASE="harbeylefty17/fastapi-service"
+IMAGE_BASE="emmaxyz/fastapi-service"
 DEPLOYMENT_NAME="fastapi-deployment"
 NAMESPACE="fastapi-app"
 

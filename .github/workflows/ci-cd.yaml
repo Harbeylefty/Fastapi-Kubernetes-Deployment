@@ -70,7 +70,7 @@ jobs:
           context: .
           push: true
           tags: |
-            harbeylefty17/fastapi-service:latest
-            harbeylefty17/fastapi-service:${{ github.sha }}
+            emmaxyz/fastapi-service:latest
+            emmaxyz/fastapi-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max 
