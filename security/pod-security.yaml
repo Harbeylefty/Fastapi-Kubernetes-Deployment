@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fastapi-app
+  labels:
+    # This enforces the RESTRICTED Pod Security Standard for this namespace.
+    # It requires pods to follow current pod hardening best practices.
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted 

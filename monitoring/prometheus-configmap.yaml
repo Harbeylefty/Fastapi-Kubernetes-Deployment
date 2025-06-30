@@ -17,7 +17,7 @@ data:
     scrape_configs:
       - job_name: 'fastapi'
         static_configs:
-          - targets: ['fastapi-service.default.svc.cluster.local:80']
+          - targets: ['fastapi-service.fastapi-app.svc.cluster.local:80']
         metrics_path: '/metrics'
       
       - job_name: 'node-exporter'

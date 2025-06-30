@@ -1,37 +1,37 @@
-name: CD Pipeline
+# name: CD Pipeline
 
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - '.github/workflows/ci-cd.yaml'
-    #   - 'k8s/deployment.yaml'
+# on:
+#   push:
+#     branches:
+#       - master
+#     paths:
+#     #   - '.github/workflows/ci-cd.yaml'
+#     #   - 'k8s/deployment.yaml'
 
-jobs:
-  deploy:
-    name: Deploy to Kubernetes
-    runs-on: ubuntu-latest
+# jobs:
+#   deploy:
+#     name: Deploy to Kubernetes
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.29.0'
+#       - name: Set up kubectl
+#         uses: azure/setup-kubectl@v3
+#         with:
+#           version: 'v1.29.0'
 
-      - name: Set up Kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "$KUBECONFIG_DATA" | base64 -d > ~/.kube/config
-        env:
-          KUBECONFIG_DATA: ${{ secrets.KUBECONFIG_DATA }}
+#       - name: Set up Kubeconfig
+#         run: |
+#           mkdir -p ~/.kube
+#           echo "$KUBECONFIG_DATA" | base64 -d > ~/.kube/config
+#         env:
+#           KUBECONFIG_DATA: ${{ secrets.KUBECONFIG_DATA }}
 
-      - name: Update image tag in deployment manifest
-        run: |
-          sed -i "s|harbeylefty17/fastapi-service:.*|harbeylefty17/fastapi-service:${{ github.sha }}|" k8s/deployment.yaml
+#       - name: Update image tag in deployment manifest
+#         run: |
+#           sed -i "s|harbeylefty17/fastapi-service:.*|harbeylefty17/fastapi-service:${{ github.sha }}|" k8s/deployment.yaml
 
-      - name: Apply Kubernetes manifests
-        run: kubectl apply -f k8s/
+#       - name: Apply Kubernetes manifests
+#         run: kubectl apply -f k8s/
