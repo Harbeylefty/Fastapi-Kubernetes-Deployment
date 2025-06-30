@@ -1,4 +1,4 @@
-# Runbook: FastAPI Production Deployment
+# Runbook: FastAPI Deployment
 
 This runbook provides step-by-step instructions for deploying, monitoring, troubleshooting, and maintaining the FastAPI application in a Kubernetes environment.
 
