@@ -12,7 +12,7 @@ set -e # Exit immediately if any command fails.
 # --- Configuration ---
 IMAGE_BASE="harbeylefty17/fastapi-service"
 DEPLOYMENT_NAME="fastapi-deployment"
-NAMESPACE="default"
+NAMESPACE="fastapi-app"
 
 # If a command-line argument (a specific tag) is provided, use it.
 # Otherwise, default to 'latest' for convenience.
@@ -38,8 +38,8 @@ echo "✅ Pre-flight checks passed."
 echo "📦 Applying Kubernetes manifests from 'k8s/' to ensure objects exist..."
 kubectl apply -f k8s/ -n $NAMESPACE
 
-echo "🔄 Updating the deployment's container image to use version: $IMAGE..."
-kubectl set image deployment/$DEPLOYMENT_NAME fastapi-app=$IMAGE -n $NAMESPACE
+echo "🔄 Updating the deployment image to ${IMAGE}..."
+kubectl set image deployment/"$DEPLOYMENT_NAME" fastapi-container="$IMAGE" -n "$NAMESPACE" --record
 
 echo "⏳ Waiting for the deployment rollout to complete. This may take a few minutes..."
 kubectl rollout status deployment/$DEPLOYMENT_NAME -n $NAMESPACE --timeout=5m

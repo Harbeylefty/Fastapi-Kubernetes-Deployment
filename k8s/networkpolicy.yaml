@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-ingress
-  namespace: default
+  namespace: fastapi-app
 spec:
   podSelector: {}
   policyTypes:
@@ -14,7 +14,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-nginx-ingress-to-fastapi
-  namespace: default
+  namespace: fastapi-app
 spec:
   podSelector:
     matchLabels:

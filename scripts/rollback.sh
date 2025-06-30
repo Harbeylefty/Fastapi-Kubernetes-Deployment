@@ -7,7 +7,7 @@ set -e
 
 # --- Configuration ---
 DEPLOYMENT_NAME="fastapi-deployment"
-NAMESPACE="default"
+NAMESPACE="fastapi-app"
 
 echo "⏪ Starting rollback for deployment '$DEPLOYMENT_NAME'..."
 

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fastapi-deployment
+  namespace: fastapi-app
   labels:
     app: fastapi-deployment
 spec:
@@ -13,6 +14,9 @@ spec:
     metadata:
       labels:
         app: fastapi-deployment
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
     spec:
       serviceAccountName: fastapi-service-account  
       containers:
