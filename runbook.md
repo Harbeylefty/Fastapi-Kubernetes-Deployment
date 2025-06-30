@@ -140,10 +140,3 @@ This runbook provides step-by-step instructions for deploying, monitoring, troub
   ```
 
 ---
-
-## 7. Escalation / Contact
-- If you cannot resolve an issue, escalate to the DevOps/Platform team or your technical lead.
-- Provide:
-  - Output of `kubectl describe` and `kubectl logs`
-  - Steps already taken
-  - Any relevant error messages 
