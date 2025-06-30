@@ -51,6 +51,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: harbeylefty17/fastapi-service:latest
+          tags: harbeylefty17/fastapi-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max 

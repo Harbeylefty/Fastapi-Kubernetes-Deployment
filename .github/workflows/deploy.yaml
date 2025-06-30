@@ -1,0 +1,78 @@
+name: CD Pipeline - App Deployment
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: harbeylefty17/fastapi-service
+  NAMESPACE: default
+
+jobs:
+  deploy-app:
+    name: Deploy FastAPI App
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure kubectl for Minikube
+        run: |
+          echo "${{ secrets.MINIKUBE_KUBECONFIG }}" | base64 -d > kubeconfig
+          export KUBECONFIG=kubeconfig
+
+      - name: Deploy FastAPI app
+        run: |
+          export KUBECONFIG=kubeconfig
+          echo "🚀 Deploying FastAPI app to Minikube..."
+          
+          # Apply Kubernetes manifests
+          kubectl apply -f k8s/
+          
+          # Update deployment with latest image
+          kubectl set image deployment/fastapi-deployment fastapi-app=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          
+          # Wait for rollout to complete
+          kubectl rollout status deployment/fastapi-deployment --timeout=300s
+
+      - name: Health check
+        run: |
+          export KUBECONFIG=kubeconfig
+          echo "🏥 Running health checks..."
+          
+          # Wait for pods to be ready
+          kubectl wait --for=condition=ready pod -l app=fastapi-app --timeout=300s
+          
+          # Get service URL
+          SERVICE_URL=$(kubectl get service fastapi-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          if [ -z "$SERVICE_URL" ]; then
+            echo "⚠️  LoadBalancer IP not available yet. You may need to run 'minikube tunnel'"
+            echo "📋 To access your service:"
+            echo "   minikube service fastapi-service"
+          else
+            echo "✅ Service available at: http://$SERVICE_URL:8000"
+          fi
+
+      - name: Verify deployment
+        run: |
+          export KUBECONFIG=kubeconfig
+          echo "🔍 Verifying deployment..."
+          
+          # Check deployment status
+          kubectl get deployment fastapi-deployment
+          kubectl get pods -l app=fastapi-app
+          kubectl get service fastapi-service
+
+      - name: Deployment success notification
+        run: |
+          echo "✅ FastAPI app deployed successfully!"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          echo "🌐 To access your app:"
+          echo "   minikube service fastapi-service"
+          echo "   # OR run 'minikube tunnel' and access via LoadBalancer IP" 
