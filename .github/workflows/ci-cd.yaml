@@ -1,25 +1,25 @@
 name: CI Pipeline
 
 on:
-  push:
-    branches: 
-      - master
-    paths:
-      - 'main.py'
-      - 'requirements.txt'
-      - 'Dockerfile'
-      - 'tests/**'
-      - '.github/workflows/ci-cd.yaml'
+  # push:
+  #   branches: 
+  #     - master
+  #   paths:
+  #     - 'main.py'
+  #     - 'requirements.txt'
+  #     - 'Dockerfile'
+  #     - 'tests/**'
+  #     - '.github/workflows/ci-cd.yaml'
 
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'main.py'
-      - 'requirements.txt'
-      - 'Dockerfile'
-      - 'tests/**'
-      - '.github/workflows/ci-cd.yaml'
+  # pull_request:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'main.py'
+  #     - 'requirements.txt'
+  #     - 'Dockerfile'
+  #     - 'tests/**'
+  #     - '.github/workflows/ci-cd.yaml'
 
   workflow_dispatch:  # Allows for manual runs anytime.
 
