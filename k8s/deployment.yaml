@@ -17,7 +17,7 @@ spec:
       serviceAccountName: fastapi-service-account  
       containers:
         - name: fastapi-container
-          image: harbeylefty17/fastapi-service   
+          image: harbeylefty17/fastapi-service:latest   
           ports:
             - containerPort: 8000
           env:
