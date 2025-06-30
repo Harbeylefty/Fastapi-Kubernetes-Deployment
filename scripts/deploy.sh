@@ -1,28 +1,25 @@
 #!/bin/bash
-# Deploys a SPECIFIC version of the application to the local Minikube cluster.
-# This script requires a tag (e.g., a git commit SHA) to be provided as an argument.
+# Deploys the application to the local Minikube cluster.
 #
-# Usage: ./scripts/deploy.sh <image-tag>
-# Example: ./scripts/deploy.sh a1b2c3d4e5f6
+# By default, it deploys the 'latest' tag.
+# You can also deploy a specific version by providing a tag as an argument.
+#
+# Usage for latest: ./scripts/deploy.sh
+# Usage for specific: ./scripts/deploy.sh <image-tag>
 
 set -e # Exit immediately if any command fails.
 
-# --- Argument Check ---
-if [ -z "$1" ]; then
-    echo "❌ Error: No image tag provided."
-    echo "   An image tag (like a git commit SHA) is required."
-    echo "   Usage: $0 <image-tag>"
-    exit 1
-fi
-
 # --- Configuration ---
 IMAGE_BASE="harbeylefty17/fastapi-service"
-TAG=$1
-IMAGE="${IMAGE_BASE}:${TAG}"
 DEPLOYMENT_NAME="fastapi-deployment"
 NAMESPACE="default"
 
-echo "🚀 Starting deployment of specific version '${TAG}' to Minikube..."
+# If a command-line argument (a specific tag) is provided, use it.
+# Otherwise, default to 'latest' for convenience.
+TAG=${1:-"latest"}
+IMAGE="${IMAGE_BASE}:${TAG}"
+
+echo "🚀 Starting deployment of version '${TAG}' to Minikube..."
 
 # --- Pre-flight Checks ---
 if ! command -v kubectl &> /dev/null; then
@@ -41,7 +38,7 @@ echo "✅ Pre-flight checks passed."
 echo "📦 Applying Kubernetes manifests from 'k8s/' to ensure objects exist..."
 kubectl apply -f k8s/ -n $NAMESPACE
 
-echo "🔄 Updating the deployment's container image to use the precise version: $IMAGE..."
+echo "🔄 Updating the deployment's container image to use version: $IMAGE..."
 kubectl set image deployment/$DEPLOYMENT_NAME fastapi-app=$IMAGE -n $NAMESPACE
 
 echo "⏳ Waiting for the deployment rollout to complete. This may take a few minutes..."
