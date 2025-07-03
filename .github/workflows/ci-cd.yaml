@@ -21,7 +21,7 @@ on:
   #     - 'tests/**'
   #     - '.github/workflows/ci-cd.yaml'
 
-  workflow_dispatch:  # Allows for manual runs anytime.
+  workflow_dispatch:  
 
 jobs:
   test:
