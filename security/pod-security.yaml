@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: fastapi-app
   labels:
+    # Pod security at namespace level.  
     # This enforces the RESTRICTED Pod Security Standard for this namespace.
     # It requires pods to follow current pod hardening best practices.
     pod-security.kubernetes.io/enforce: restricted

@@ -20,9 +20,9 @@ spec:
             - containerPort: 3000
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
+              valueFrom: 
                 secretKeyRef:
-                  name: grafana-secret
+                  name: grafana-secret  # used kubernetes secrets for security. 
                   key: admin-password
 
 --- 

@@ -5,7 +5,7 @@ metadata:
   namespace: fastapi-app
 spec:
   selector:
-    app: fastapi-deployment
+    app: fastapi-deployment  # route traffic to pods with this label. 
   ports:
     - protocol: TCP
       port: 80

@@ -19,8 +19,8 @@ spec:
           ports:
             - containerPort: 9093
           volumeMounts:
-            - name: config
-              mountPath: /etc/alertmanager
+            - name: config # mount volume inside the container. 
+              mountPath: /etc/alertmanager  
           args:
             - '--config.file=/etc/alertmanager/alertmanager.yml'
             - '--storage.path=/alertmanager'

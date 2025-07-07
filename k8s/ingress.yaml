@@ -1,3 +1,4 @@
+# ingres provides http/https routing and load balancing. 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,9 +7,9 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx  # use nginx ingress controller. 
   rules:
-    - host: fastapi.test
+    - host: fastapi.test  # route traffic based on hostname. 
       http:
         paths:
           - path: /

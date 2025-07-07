@@ -9,7 +9,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: fastapi-deployment
+      app: fastapi-deployment  # deployment should manage pods with this labels. 
   template:
     metadata:
       labels:
@@ -62,4 +62,4 @@ spec:
               drop: ["ALL"]
             seccompProfile:
               type: RuntimeDefault
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 30  # gives  the container 30 seconds to gracefully shutdown after it is terminated. 
