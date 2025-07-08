@@ -5,6 +5,7 @@ monitoring/grafana-secret.yaml
 # Environment-specific secrets
 *-secret.yaml
 *-secrets.yaml
+k8s/secret.yaml
 
 # Local development files
 .env
