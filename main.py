@@ -9,8 +9,9 @@ from fastapi import Request
 app = FastAPI()
 
 # Define metrics
-REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint'])
-REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'HTTP request latency')
+REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint']) # A Counter to track the total number of requests, labeled by HTTP method and endpoint.
+
+REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'HTTP request latency') # A Histogram to track how long each request takes.
 
 @app.get("/health")
 async def health_check():
@@ -28,6 +29,7 @@ async def create_item(item: dict):
 async def metrics():
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
+# Record the time taken to serve the request, Records the request duration in the histogram
 @app.middleware("http")
 async def add_metrics(request: Request, call_next):
     start_time = time.time()
